@@ -23,5 +23,13 @@ def predict_api():                #where i can using post man or any other tool 
    print(output[0])      #Im gng to take first value                                 
    return jsonify(output[0])
 
+@app.route('/predict',methods=['POST'])
+def predict():
+    data=[float(x) for x in request.form.values()] #This is list format and watever values we r filling in tht form we'll be able to capture it becoz all the info present in request object 
+    final_input=scalar.transform(np.array(data).reshape(1,-1))  #and i want convert all these values into float becoz all these values needs to be given as float w.r.t the model
+    print(final_input)                                               # im creatng for loop for every values inside this form convert tht into float and finally get in the form of list format 
+    output=regmodel.predict(final_input)[0]
+    return render_template("home.html",prediction_text="The House Price Prediction is {}".format(output)) #Here im gng to render 'home.html' and it is gng to replace this placeholder(prediction_text).there will some kind of placeholder in the html page and we r gng to house price predictionis some output  
+
 if __name__=="__main__":
     app.run(debug=True)
